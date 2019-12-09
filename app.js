@@ -1,73 +1,105 @@
- //Name:    Budgety JavaScript Application
- //Author:  Dean Catterson
- //Date:    19/11/2019
+//Name:    Budgety JavaScript Application
+//Author:  Dean Catterson
+//Date:    19/11/2019
 
 
- var budgetController = (function() {
+var budgetController = (function () {
 
- 	//TODO
+	var Expense = function (id, description, value) {
+		this.id = id;
+		this.description = description;
+		this.value = value;
+	};
 
- })();
+	var Income = function (id, description, value) {
+		this.id = id;
+		this.description = description;
+		this.value = value;
+	};
 
- var uiController = (function() {
+	var data = {
+		allItems: {
+			exp: [],
+			inc: []
+		},
+		totals: {
+			exp: 0,
+			inc: 0
+		}
+	}
 
- 	var domStrings = {
- 		inputType: '.add__type',
- 		inputDescription: '.add__description',
- 		inputValue: '.add__value',
- 		inputBtn: '.add__btn'
- 	}
+})();
 
- 	return {
- 		getinput: function() {
- 			return {
- 				type: document.querySelector(domStrings.inputType).value, //Will be either inc or exp
- 				description: document.querySelector(domStrings.inputDescription).value,
- 				value: document.querySelector(domStrings.inputValue).value
- 			};
- 		},
+var uiController = (function () {
 
- 		getdomStrings: function() {
- 			return domStrings;
- 		}
- 	};
+	var domStrings = {
+		inputType: '.add__type',
+		inputDescription: '.add__description',
+		inputValue: '.add__value',
+		inputBtn: '.add__btn'
+	}
 
- 	//TODO
+	return {
+		getinput: function () {
+			return {
+				type: document.querySelector(domStrings.inputType).value, //Will be either inc or exp
+				description: document.querySelector(domStrings.inputDescription).value,
+				value: document.querySelector(domStrings.inputValue).value
+			};
+		},
 
- })();
+		getdomStrings: function () {
+			return domStrings;
+		}
+	};
+
+	//TODO
+
+})();
 
 //Global App Controller
- var appController = (function(budgetCtrl, uiCtrl) {
+var appController = (function (budgetCtrl, uiCtrl) {
 
- 	var DOM = uiCtrl.getdomStrings();
+	var setupEventListeners = function () {
+		var DOM = uiCtrl.getdomStrings();
 
-  	var ctrlAddItem = function() {
+		document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
- 		//TODO
+		document.addEventListener('keypress', function (event) {
+			if (event.keyCode === 13 || event.which === 13) {
+				ctrlAddItem();
+			}
+		});
+	};
 
- 		//1. Get filed input data
- 		var input = uiCtrl.getinput();
- 		console.log('Input: ', input);
 
- 		//2. Add item to the budget controller
 
- 		//3. Add new item to UI
 
- 		//4. Calculate budget
+	var ctrlAddItem = function () {
 
- 		//5. Display budget on the UI
+		//TODO
 
- 		console.log('IT works')
- 	}
+		//1. Get filed input data
+		var input = uiCtrl.getinput();
 
- 	// document.querySelector(DOM.inputButton)
- 	// .addEventListener('click', ctrlAddItem);
- 	document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+		//2. Add item to the budget controller
 
- 	document.addEventListener('keypress', function(event) {
- 		if (event.keyCode === 13 || event.which === 13) {
- 		ctrlAddItem();
- 		}
- 	});
+		//3. Add new item to UI
 
- })(budgetController, uiController);
+		//4. Calculate budget
+
+		//5. Display budget on the UI
+
+		console.log('IT works')
+	}
+
+	return {
+		init: function () {
+			console.log('Application has started.');
+			setupEventListeners();
+		}
+	}
+
+})(budgetController, uiController);
+
+appController.init();
