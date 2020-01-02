@@ -29,13 +29,13 @@ var budgetController = (function () {
 	};
 
 	return {
-		addItem: function(type, des, val) {
+		addItem: function (type, des, val) {
 			var newItem, ID;
 
 			//Create new ID
 			if (data.allItems[type].length > 0) {
 				ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
- 
+
 			} else {
 				ID = 0;
 			}
@@ -56,7 +56,7 @@ var budgetController = (function () {
 			return newItem;
 		},
 
-		testing: function() {
+		testing: function () {
 			console.log(data);
 		}
 	};
@@ -69,7 +69,9 @@ var uiController = (function () {
 		inputType: '.add__type',
 		inputDescription: '.add__description',
 		inputValue: '.add__value',
-		inputBtn: '.add__btn'
+		inputBtn: '.add__btn',
+		incomeContainer: '.income__list',
+		expensesContainer: '.expenses__list'
 	}
 
 	return {
@@ -79,6 +81,28 @@ var uiController = (function () {
 				description: document.querySelector(domStrings.inputDescription).value,
 				value: document.querySelector(domStrings.inputValue).value
 			};
+		},
+
+		addListItem: function (obj, type) {
+			var html, newHtml, element;
+			// Create html string with placeholder tags
+
+			if (type === 'inc') {
+				element = domStrings.incomeContainer;
+				html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+			} else if (type === 'exp') {
+				element = domStrings.expensesContainer;
+				html = '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+			}
+
+			//Replace placeholder tags with actual data
+			newHtml = html.replace('%id%', obj.id);
+			newHtml = newHtml.replace('%description%', obj.description);
+			newHtml = newHtml.replace('%value%', obj.value);
+
+			//Insert the html into the DOM
+			document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+
 		},
 
 		getdomStrings: function () {
@@ -120,14 +144,13 @@ var appController = (function (budgetCtrl, uiCtrl) {
 		//2. Add item to the budget controller
 		newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-
 		//3. Add new item to UI
+		uiCtrl.addListItem(newItem, input.type);
 
 		//4. Calculate budget
 
 		//5. Display budget on the UI
 
-		console.log('IT works')
 	}
 
 	return {
