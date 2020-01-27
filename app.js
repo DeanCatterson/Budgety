@@ -168,6 +168,13 @@ var uiController = (function () {
 
 		},
 
+
+		deleteListItem: function(selectorId) {
+			var el = document.getElementById(selectorId)
+			el.parentNode.removeChild(el)
+		},
+
+
 		clearFields: function () {
 			var fields, fieldsArray;
 
@@ -238,8 +245,6 @@ var appController = (function (budgetCtrl, uiCtrl) {
 
 		var input, newItem;
 
-		//TODO
-
 		//1. Get filed input data
 		input = uiCtrl.getInput();
 
@@ -278,8 +283,10 @@ var appController = (function (budgetCtrl, uiCtrl) {
 			budgetCtrl.deleteItem(type, Id);
 
 			//2. delete item from UI
+			uiCtrl.deleteListItem(itemId);
 
 			//3. update and show new budget
+			updateBudget();
 		}
 
 	};
