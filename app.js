@@ -194,6 +194,12 @@ var uiController = (function () {
 		
 	};
 
+	var nodeListForEach = function (list, callback) {
+		for (var i = 0; i < list.length; i++) {
+			callback(list[i], i);
+		}
+	};
+
 	return {
 		getInput: function () {
 			return {
@@ -265,11 +271,7 @@ var uiController = (function () {
 
 			var fields = document.querySelectorAll(domStrings.expensesPercLabel);
 
-			var nodeListForEach = function (list, callback) {
-				for (var i = 0; i < list.length; i++) {
-					callback(list[i], i);
-				}
-			};
+			
 
 			nodeListForEach(fields, function (current, index) {
 				if (percentages[index] > 0) {
@@ -290,6 +292,22 @@ var uiController = (function () {
 			year = now.getFullYear();
 			document.querySelector(domStrings.dateLabel).textContent = months[month] + ' ' + year;
 			
+		},
+
+		changedType: function() {
+
+			var fields = document.querySelectorAll(
+				domStrings.inputType + ',' +
+				domStrings.inputDescription + ',' +
+				domStrings.inputValue);
+
+			nodeListForEach(fields, function(cur) {
+				cur.classList.toggle('red-focus');
+			});
+
+			document.querySelector(domStrings.inputBtn).classList.toggle('red');
+			
+
 		},
 		
 
@@ -316,8 +334,9 @@ var appController = (function (budgetCtrl, uiCtrl) {
 			}
 		});
 
-
 		document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+		document.querySelector(DOM.inputType).addEventListener('change', uiCtrl.changedType);
 	};
 
 
@@ -377,10 +396,6 @@ var appController = (function (budgetCtrl, uiCtrl) {
 		var itemId, splitId;
 
 		itemId = event.target.parentNode.parentNode.parentNode.parentNode.id;
-		// console.log('itemId: ', itemId);
-		// console.log('hack: ', itemId = event.target.parentNode);
-		// console.log('hack.id: ', itemId = event.target.parentNode.id);
-		// console.log('hack: ', itemId = event.target);
 
 		if (itemId) {
 			splitId = itemId.split('-');
